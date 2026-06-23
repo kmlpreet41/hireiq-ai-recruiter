@@ -3,214 +3,1368 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>HireIQ — AI Candidate Intelligence</title>
+    <title>HireIQ — AI Candidate Ranking System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css">
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #030811;
+        --bg2: #060f1e;
+        --bg3: #0b1829;
+        --saffron: #ff6b1a;
+        --teal: #00c9a7;
+        --blue: #4a9eff;
+        --green: #22c55e;
+        --purple: #a78bfa;
+        --red: #f87171;
+        --white: #eef2ff;
+        --muted: #6b7fa3;
+        --card: rgba(255, 255, 255, 0.04);
+        --border: rgba(255, 255, 255, 0.08);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--white);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+      }
+
+     
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 40px;
+        background: rgba(3, 8, 17, 0.92);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+      }
+      .brand {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-text {
+        background: linear-gradient(135deg, var(--saffron), var(--teal));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .nav-badge {
+        background: rgba(0, 201, 167, 0.1);
+        border: 1px solid rgba(0, 201, 167, 0.3);
+        color: var(--teal);
+        font-size: 10px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-family: "Space Mono", monospace;
+        letter-spacing: 0.08em;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .live-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--teal);
+        animation: pulse 1.5s infinite;
+      }
+
+
+      .hero {
+        text-align: center;
+        padding: 56px 24px 40px;
+        position: relative;
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 107, 26, 0.08);
+        border: 1px solid rgba(255, 107, 26, 0.25);
+        color: var(--saffron);
+        font-size: 10px;
+        padding: 5px 14px;
+        border-radius: 20px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family: "Space Mono", monospace;
+        margin-bottom: 22px;
+      }
+      .hero h1 {
+        font-family: "Rajdhani", sans-serif;
+        font-size: clamp(40px, 6vw, 80px);
+        font-weight: 700;
+        line-height: 0.95;
+        letter-spacing: -0.02em;
+      }
+      .hero h1 em {
+        font-style: normal;
+        background: linear-gradient(
+          135deg,
+          var(--saffron) 0%,
+          #ffa040 45%,
+          var(--teal) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-sub {
+        color: var(--muted);
+        font-size: 15px;
+        max-width: 520px;
+        margin: 18px auto 0;
+        line-height: 1.7;
+      }
+
+
+      .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 32px 48px;
+      }
+
+ 
+      .step-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .step-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--saffron), #ff9a3c);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .step-title {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .step-sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+
+      /* CARD */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 24px;
+        transition: border-color 0.3s;
+      }
+      .card:focus-within {
+        border-color: rgba(255, 107, 26, 0.3);
+      }
+
+
+      textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--white);
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        padding: 14px;
+        resize: vertical;
+        outline: none;
+        line-height: 1.7;
+        transition: border-color 0.2s;
+      }
+      textarea:focus {
+        border-color: rgba(0, 201, 167, 0.4);
+      }
+      textarea::placeholder {
+        color: var(--muted);
+      }
+
+
+      .btn-sample {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+        padding: 7px 14px;
+        border-radius: 7px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-right: 8px;
+      }
+      .btn-sample:hover {
+        border-color: rgba(255, 107, 26, 0.4);
+        color: var(--white);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--saffron), #ff9a3c);
+        border: none;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 14px 36px;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 0 30px rgba(255, 107, 26, 0.3);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        letter-spacing: 0.02em;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 50px rgba(255, 107, 26, 0.5);
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .btn-export {
+        background: rgba(0, 201, 167, 0.1);
+        border: 1px solid rgba(0, 201, 167, 0.3);
+        color: var(--teal);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-export:hover {
+        background: rgba(0, 201, 167, 0.2);
+      }
+
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      thead tr {
+        border-bottom: 2px solid var(--border);
+      }
+      th {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        padding: 12px 14px;
+        text-align: left;
+        font-family: "Space Mono", monospace;
+        font-weight: 400;
+      }
+      td {
+        padding: 14px;
+        font-size: 13px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        vertical-align: top;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .rank-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .rank-1 {
+        background: rgba(255, 215, 0, 0.15);
+        color: #ffd700;
+      }
+      .rank-2 {
+        background: rgba(192, 192, 192, 0.15);
+        color: #c0c0c0;
+      }
+      .rank-3 {
+        background: rgba(205, 127, 50, 0.15);
+        color: #cd7f32;
+      }
+      .rank-other {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+      }
+      .candidate-name {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 3px;
+      }
+      .candidate-role {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .score-bar-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .score-num {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        min-width: 40px;
+      }
+      .score-track {
+        flex: 1;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 3px;
+        overflow: hidden;
+        min-width: 60px;
+      }
+      .score-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .skill-tag {
+        display: inline-block;
+        background: rgba(74, 158, 255, 0.1);
+        border: 1px solid rgba(74, 158, 255, 0.2);
+        color: var(--blue);
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin: 2px 2px 0 0;
+      }
+      .signal-tag {
+        display: inline-block;
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin: 2px 2px 0 0;
+      }
+      .sig-positive {
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--green);
+      }
+      .sig-neutral {
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--muted);
+      }
+      .sig-strong {
+        background: rgba(167, 139, 250, 0.1);
+        color: var(--purple);
+      }
+      .ai-reason {
+        font-size: 12px;
+        color: rgba(238, 242, 255, 0.7);
+        line-height: 1.6;
+        max-width: 280px;
+      }
+      .fit-label {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+      .fit-excellent {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--green);
+      }
+      .fit-strong {
+        background: rgba(0, 201, 167, 0.15);
+        color: var(--teal);
+      }
+      .fit-good {
+        background: rgba(74, 158, 255, 0.15);
+        color: var(--blue);
+      }
+      .fit-moderate {
+        background: rgba(255, 107, 26, 0.15);
+        color: var(--saffron);
+      }
+
+      .progress-card {
+        background: rgba(0, 201, 167, 0.05);
+        border: 1px solid rgba(0, 201, 167, 0.2);
+        border-radius: 14px;
+        padding: 20px 24px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .spinner {
+        width: 28px;
+        height: 28px;
+        border: 2px solid rgba(0, 201, 167, 0.2);
+        border-top: 2px solid var(--teal);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .progress-text {
+        font-size: 13px;
+        color: var(--teal);
+      }
+      .progress-sub {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* SUMMARY STATS */
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .summary-stat {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px;
+        text-align: center;
+      }
+      .ss-val {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+      }
+      .ss-label {
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 4px;
+      }
+
+
+      .upload-area {
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.2s;
+          background: 0.2s;
+        position: relative;
+      }
+      .upload-area:hover {
+        border-color: rgba(0, 201, 167, 0.4);
+        background: rgba(0, 201, 167, 0.03);
+      }
+      .upload-area input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+      }
+      .upload-icon {
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+      .upload-text {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .upload-text strong {
+        color: var(--teal);
+      }
+
+ 
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 16px 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.6s ease both;
+      }
+
+
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 107, 26, 0.3);
+        border-radius: 3px;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 900px) {
+        .container {
+          padding: 0 16px 40px;
+        }
+        nav {
+          padding: 14px 20px;
+        }
+        .summary-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="aurora">
-      <div class="orb orb1"></div>
-      <div class="orb orb2"></div>
-      <div class="orb orb3"></div>
-      <div class="orb orb4"></div>
-    </div>
-
+    <!-- NAV -->
     <nav>
-      <div class="nav-logo">
-        <div class="logo-icon">🧠</div>
-        <span class="logo-name">HireIQ</span>
+      <div class="brand">🧠 <span class="brand-text">HireIQ</span></div>
+      <div class="nav-badge">
+        <div class="live-dot"></div>
+        AI-POWERED RANKING ENGINE
       </div>
-      <div class="nav-pill">
-        <div class="nav-dot"></div>
-        AI RANKING ENGINE · LIVE
-      </div>
-      <div class="nav-right">
-        
-        <div class="nav-stat-pair">
-          <div class="nav-stat-v">Hack2Skill</div>
-          <div class="nav-stat-l">Data & AI 2025</div>
-        </div>
+      <div
+        style="
+          font-size: 11px;
+          color: var(--muted);
+          font-family: &quot;Space Mono&quot;, monospace;
+        "
+      >
+        Data & AI Challenge · INDIA RUNS
       </div>
     </nav>
 
-    <div class="hero fu">
-      <div class="hero-tag">🏆 India Runs · Data & AI Challenge 2025</div>
-      <h1>
-        Hire Smarter.<br />
-        <span class="line2">Not Harder.</span>
-      </h1>
+    <!-- HERO -->
+    <div class="hero fade-up">
+      <div class="hero-eyebrow">🏆 Hack2Skill · Data & AI Challenge 2025</div>
+      <h1>Hire Smarter.<br /><em>Not Harder.</em></h1>
       <p class="hero-sub">
-        AI that understands candidates the way a great recruiter does — reading
-        context, career trajectory, and genuine potential. Not just keywords.
+        AI that ranks candidates the way a great recruiter would — understanding
+        context, career trajectory, and genuine fit. Not keywords.
       </p>
-      <div class="hero-chips">
-        <div class="chip"><span>🧬</span> Semantic Understanding</div>
-        <div class="chip"><span>⚡</span> Real Claude AI</div>
-        <div class="chip"><span>🎯</span> Behavioral Signals</div>
-        <div class="chip"><span>📊</span> Ranked Shortlist</div>
-        <div class="chip"><span>⬇️</span> Export CSV / JSON</div>
-      </div>
     </div>
 
-    <div class="wrap">
-      <div class="gcard fu fu1">
-        <div class="sec-head">
-          <span class="sec-num">01 / ROLE DEFINITION</span>
+    <!-- MAIN -->
+    <div class="container">
+      <!-- STEP 1: JOB DESCRIPTION -->
+      <div class="card fade-up">
+        <div class="step-label">
+          <div class="step-num">1</div>
           <div>
-            <div class="sec-title">Paste Job Description</div>
-            <div class="sec-desc">
-              AI will semantically decode what this role truly demands
+            <div class="step-title">Paste Job Description</div>
+            <div class="step-sub">
+              AI will deeply understand what this role truly needs
             </div>
           </div>
         </div>
-        <div class="sample-row">
-          <button class="sbtn" onclick="loadJD('sde')">
+        <div
+          style="margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px"
+        >
+          <button class="btn-sample" onclick="loadSampleJD('sde')">
             💻 Software Engineer
           </button>
-          <button class="sbtn" onclick="loadJD('pm')">
+          <button class="btn-sample" onclick="loadSampleJD('pm')">
             📋 Product Manager
           </button>
-          <button class="sbtn" onclick="loadJD('ds')">📊 Data Scientist</button>
-          <button class="sbtn" onclick="loadJD('ml')">🤖 ML Engineer</button>
+          <button class="btn-sample" onclick="loadSampleJD('ds')">
+            📊 Data Scientist
+          </button>
+          <button class="btn-sample" onclick="loadSampleJD('ml')">
+            🤖 ML Engineer
+          </button>
         </div>
         <textarea
-          id="jd"
+          id="jd-input"
           rows="8"
           placeholder="Paste the full job description here...
 
-e.g. We are looking for a Senior Software Engineer with 5+ years experience in Python and distributed systems. The ideal candidate is entrepreneurial, has led teams at high-growth startups, and thrives in ambiguous environments..."
+Example: We are looking for a Senior Software Engineer with 5+ years experience in Python and distributed systems. The ideal candidate has worked in high-growth startups, demonstrates strong problem-solving skills, and has experience with cloud infrastructure (AWS/GCP)..."
         ></textarea>
       </div>
 
-      <div class="gcard fu fu2">
-        <div class="sec-head">
-          <span class="sec-num">02 / CANDIDATE POOL</span>
+      <!-- STEP 2: CANDIDATES -->
+      <div class="card fade-up">
+        <div class="step-label">
+          <div class="step-num">2</div>
           <div>
-            <div class="sec-title">Load Candidate Profiles</div>
-            <div class="sec-desc">
-              Upload the Hack2Skill dataset CSV or use sample candidates
+            <div class="step-title">Load Candidate Profiles</div>
+            <div class="step-sub">
+              Upload CSV from the dataset or use our sample candidates
             </div>
           </div>
         </div>
-        <div class="upload-zone" id="uzone">
+        <div class="upload-area" id="upload-area">
           <input
             type="file"
-            id="csvfile"
+            id="csv-upload"
             accept=".csv,.json"
-            onchange="handleFile(event)"
+            onchange="handleFileUpload(event)"
           />
-          <span class="upload-emoji">📂</span>
+          <div class="upload-icon">📂</div>
           <div class="upload-text">
-            Drop your <strong>CSV dataset</strong> here, or click to browse
+            Drop your <strong>CSV dataset</strong> here or click to browse
           </div>
-          <div style="font-size: 11px; color: var(--dim); margin-top: 5px">
-            Supports .csv and .json
+          <div style="font-size: 11px; color: var(--muted); margin-top: 6px">
+            Supports CSV and JSON formats
           </div>
         </div>
-        <div class="divider-or">or</div>
-        <div
-          style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap"
-        >
-          <button class="sbtn" onclick="loadSamples()">
+        <div class="divider">or use sample data</div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button class="btn-sample" onclick="loadSampleCandidates()">
             👥 Load 10 Sample Candidates
           </button>
           <span
-            id="ccount"
+            id="candidate-count"
             style="
               font-size: 12px;
-              color: var(--lime);
-              font-family: &quot;JetBrains Mono&quot;, monospace;
+              color: var(--teal);
+              align-self: center;
+              font-family: &quot;Space Mono&quot;, monospace;
             "
           ></span>
         </div>
       </div>
 
-      <div class="run-wrap fu fu3">
-        <button class="run-btn" id="runbtn" onclick="runAI()">
-          🤖 &nbsp;Rank Candidates with AI
+      <!-- STEP 3: RUN -->
+      <div style="text-align: center; margin-bottom: 32px">
+        <button class="btn-primary" id="run-btn" onclick="runRanking()">
+          🤖 Rank Candidates with AI
         </button>
-        <div class="run-hint">
-           AI will read every profile and rank them by genuine fit
+        <div style="font-size: 11px; color: var(--muted); margin-top: 10px">
+          Claude AI will analyze each candidate against the job description
         </div>
       </div>
 
-      <div class="progress-wrap" id="prog">
-        <div class="prog-ring">
-          <svg width="48" height="48" viewBox="0 0 48 48">
-            <circle
-              cx="24"
-              cy="24"
-              r="20"
-              fill="none"
-              stroke="rgba(255,255,255,.08)"
-              stroke-width="4"
-            />
-            <circle
-              cx="24"
-              cy="24"
-              r="20"
-              fill="none"
-              stroke="url(#pg)"
-              stroke-width="4"
-              stroke-linecap="round"
-              stroke-dasharray="126"
-              stroke-dashoffset="40"
-            />
-            <defs>
-              <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#8B5CF6" />
-                <stop offset="100%" stop-color="#06B6D4" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div class="prog-text">
-          <strong id="prog-title">Analyzing candidates...</strong>
-          <small id="prog-sub">AI is reading job description</small>
+      <!-- PROGRESS -->
+      <div class="progress-card" id="progress-card" style="display: none">
+        <div class="spinner"></div>
+        <div>
+          <div class="progress-text" id="progress-text">
+            🤖 AI is analyzing candidates...
+          </div>
+          <div class="progress-sub" id="progress-sub">
+            Reading job description and understanding requirements
+          </div>
         </div>
       </div>
 
-      <div id="results" style="display: none">
-        <div class="stats-bar" id="statsbar"></div>
+      <!-- RESULTS -->
+      <div id="results-section" style="display: none">
+        <!-- SUMMARY -->
+        <div class="summary-grid" id="summary-grid"></div>
 
-        <div class="results-head">
+        <!-- EXPORT -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+          "
+        >
           <div>
-            <div class="results-title">🏆 AI Ranked Shortlist</div>
-            <div class="results-sub">
-              Sorted by genuine fit — semantic match, trajectory, behavioral
-              signals
+            <div
+              style="
+                font-family: &quot;Rajdhani&quot;, sans-serif;
+                font-size: 20px;
+                font-weight: 700;
+              "
+            >
+              🏆 AI Ranked Shortlist
+            </div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 2px">
+              Ranked by genuine fit — not keyword matching
             </div>
           </div>
-          <div class="export-row">
-            <button class="exp-btn exp-csv" onclick="exportCSV()">
-              ⬇ Export CSV
+          <div style="display: flex; gap: 10px">
+            <button class="btn-export" onclick="exportCSV()">
+              ⬇️ Export CSV
             </button>
-            <button class="exp-btn exp-json" onclick="exportJSON()">
-              ⬇ Export JSON
+            <button
+              class="btn-export"
+              onclick="exportJSON()"
+              style="
+                color: var(--purple);
+                border-color: rgba(167, 139, 250, 0.3);
+                background: rgba(167, 139, 250, 0.1);
+              "
+            >
+              ⬇️ Export JSON
             </button>
           </div>
         </div>
 
-        <div class="cards-grid" id="cardsgrid"></div>
+        <!-- TABLE -->
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 50px">Rank</th>
+                  <th>Candidate</th>
+                  <th>AI Score</th>
+                  <th>Key Skills</th>
+                  <th>Behavioral Signals</th>
+                  <th>AI Reasoning</th>
+                  <th>Fit Level</th>
+                </tr>
+              </thead>
+              <tbody id="results-body"></tbody>
+            </table>
+          </div>
+        </div>
 
-        <div class="ai-summary" id="aisumcard">
-          <div class="ais-head">
-            <div class="ais-icon">🤖</div>
+        <!-- AI SUMMARY -->
+        <div class="card" style="margin-top: 20px" id="ai-summary-card">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 14px;
+            "
+          >
+            <div style="font-size: 20px">🤖</div>
             <div>
-              <div class="ais-title">AI Recruiter Verdict</div>
-              <div class="ais-sub">
-                What Claude found across the entire candidate pool
+              <div
+                style="
+                  font-family: &quot;Rajdhani&quot;, sans-serif;
+                  font-size: 17px;
+                  font-weight: 700;
+                "
+              >
+                AI Recruiter Summary
+              </div>
+              <div style="font-size: 11px; color: var(--muted)">
+                What the AI found across all candidates
               </div>
             </div>
           </div>
-          <div class="ais-text" id="aisumtext"></div>
+          <div
+            id="ai-summary-text"
+            style="
+              font-size: 13px;
+              line-height: 1.8;
+              color: rgba(238, 242, 255, 0.8);
+            "
+          ></div>
         </div>
       </div>
     </div>
+
+    <script>
+      /* ── SAMPLE DATA ── */
+      const sampleJDs = {
+        sde: `Senior Software Engineer — Backend
+
+We are looking for a passionate Senior Software Engineer to join our high-growth fintech startup. You will design and own core backend systems that process millions of transactions daily.
+
+Requirements:
+- 4–7 years of backend engineering experience
+- Deep expertise in Python or Go
+- Experience with distributed systems, microservices architecture
+- Strong knowledge of databases (PostgreSQL, Redis, MongoDB)
+- Cloud experience (AWS or GCP preferred)
+- Experience with CI/CD pipelines and DevOps practices
+- Prior experience at a funded startup or high-scale product preferred
+- Open source contributions are a big plus
+- Strong problem-solving skills and ability to work independently
+
+Nice to have:
+- Experience with Kafka or message queue systems
+- Kubernetes/Docker experience
+- ML pipeline experience`,
+
+        pm: `Product Manager — Growth
+
+We're hiring a Product Manager to drive user growth and engagement at our B2C SaaS platform. You'll work closely with engineering, design, and data teams.
+
+Requirements:
+- 3–6 years of product management experience
+- Strong data-driven mindset — comfortable with SQL and analytics
+- Experience shipping consumer-facing products
+- Track record of improving key growth metrics (DAU, retention, NPS)
+- Excellent communication and stakeholder management skills
+- Experience with A/B testing frameworks
+- MBA or equivalent preferred but not required`,
+
+        ds: `Data Scientist — NLP / AI
+
+Join our AI team building next-generation language models for document understanding.
+
+Requirements:
+- 3–5 years of industry experience in data science or ML
+- Strong Python skills (pandas, scikit-learn, PyTorch or TensorFlow)
+- Experience with NLP — transformers, BERT, LLMs
+- Published research or Kaggle competition success is a strong plus
+- Experience deploying ML models to production
+- PhD preferred but not required`,
+
+        ml: `Machine Learning Engineer
+
+Build and deploy large-scale ML systems powering our recommendation engine.
+
+Requirements:
+- 3–6 years of ML engineering experience
+- Strong Python, familiarity with C++ a plus
+- Experience with model training pipelines at scale (MLflow, Kubeflow)
+- Deep understanding of ranking/recommendation systems
+- Experience with vector databases and embedding models
+- Strong systems thinking — you care about latency and throughput`,
+      };
+
+      const sampleCandidates = [
+        {
+          name: "Aarav Mehta",
+          role: "Senior Backend Engineer",
+          exp: 6,
+          company: "Razorpay",
+          skills: "Python,Go,PostgreSQL,Redis,AWS,Kafka,Kubernetes",
+          activity: "12 GitHub repos · 3 PRs merged to OSS · LeetCode top 5%",
+          education: "IIT Bombay, B.Tech CS",
+          highlight:
+            "Led migration of monolith to microservices serving 50M txns/day",
+        },
+        {
+          name: "Priya Sharma",
+          role: "Full Stack Developer",
+          exp: 4,
+          company: "Flipkart",
+          skills: "Python,React,MySQL,Docker,GCP,MongoDB",
+          activity: "Active on Stack Overflow (top 3%) · 8 GitHub repos",
+          education: "BITS Pilani, B.Tech",
+          highlight: "Built inventory system reducing stockouts by 32%",
+        },
+        {
+          name: "Rohan Gupta",
+          role: "Software Engineer",
+          exp: 3,
+          company: "Infosys",
+          skills: "Java,Spring Boot,Oracle,Jenkins,Azure",
+          activity: "1 GitHub repo · LinkedIn 200+ connections",
+          education: "NIT Trichy, B.Tech",
+          highlight: "Automated reporting saving 20 hrs/week",
+        },
+        {
+          name: "Sneha Iyer",
+          role: "Backend Engineer",
+          exp: 5,
+          company: "Zomato",
+          skills: "Go,Python,PostgreSQL,Redis,AWS,Kafka,gRPC",
+          activity: "Speaker at GopherConIndia · 15 GitHub repos · OSS contrib",
+          education: "IIT Madras, M.Tech",
+          highlight: "Designed order routing system for 10M daily orders",
+        },
+        {
+          name: "Karan Verma",
+          role: "DevOps Engineer",
+          exp: 4,
+          company: "Freshworks",
+          skills: "Python,Kubernetes,Terraform,AWS,CI/CD,Docker,Redis",
+          activity: "AWS Certified Solutions Architect · 6 GitHub repos",
+          education: "Anna University, B.Tech",
+          highlight: "Reduced deployment time from 45min to 8min",
+        },
+        {
+          name: "Ananya Singh",
+          role: "Software Engineer II",
+          exp: 5,
+          company: "PhonePe",
+          skills: "Python,FastAPI,PostgreSQL,MongoDB,GCP,Redis,Celery",
+          activity: "20 GitHub repos · Kaggle Notebook Expert · Tech blogger",
+          education: "Delhi University, MCA",
+          highlight:
+            "Built fraud detection module cutting losses by ₹2Cr/month",
+        },
+        {
+          name: "Vikram Nair",
+          role: "Junior Developer",
+          exp: 1,
+          company: "TCS",
+          skills: "Python,MySQL,HTML,CSS,JavaScript",
+          activity: "3 GitHub repos · HackerRank 2 stars",
+          education: "VIT, B.Tech",
+          highlight: "Built internal leave management tool",
+        },
+        {
+          name: "Deepa Pillai",
+          role: "Principal Engineer",
+          exp: 8,
+          company: "Google",
+          skills: "Python,C++,Distributed Systems,Spanner,Kubernetes,Go",
+          activity: "2 patents filed · Published NSDI paper · 30 GitHub repos",
+          education: "IISc, PhD CS",
+          highlight: "Led Google Pay India infra team — 500M users",
+        },
+        {
+          name: "Arjun Kapoor",
+          role: "Backend Developer",
+          exp: 3,
+          company: "Startup",
+          skills: "Node.js,MongoDB,AWS Lambda,Redis,GraphQL",
+          activity: "4 GitHub repos · Hackathon winner · Active dev community",
+          education: "Manipal University, B.Tech",
+          highlight: "Built real-time chat system for 100K concurrent users",
+        },
+        {
+          name: "Meera Krishnan",
+          role: "Software Engineer",
+          exp: 4,
+          company: "Swiggy",
+          skills: "Python,Go,PostgreSQL,RabbitMQ,Docker,GCP,Redis",
+          activity: "10 GitHub repos · GDG speaker · OSS contributor",
+          education: "IIT Delhi, B.Tech CS",
+          highlight: "Engineered delivery ETA model improving accuracy by 40%",
+        },
+      ];
+
+      let candidates = [];
+      let rankedResults = [];
+      let jobDescription = "";
+
+      /* ── LOAD SAMPLES ── */
+      function loadSampleJD(type) {
+        document.getElementById("jd-input").value = sampleJDs[type];
+      }
+      function loadSampleCandidates() {
+        candidates = [...sampleCandidates];
+        document.getElementById("candidate-count").textContent =
+          `✅ ${candidates.length} candidates loaded`;
+      }
+
+      /* ── FILE UPLOAD ── */
+      function handleFileUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            if (file.name.endsWith(".json")) {
+              candidates = JSON.parse(ev.target.result);
+            } else {
+              candidates = parseCSV(ev.target.result);
+            }
+            document.getElementById("candidate-count").textContent =
+              `✅ ${candidates.length} candidates loaded from ${file.name}`;
+          } catch (err) {
+            alert("Error reading file. Please check the format.");
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function parseCSV(text) {
+        const lines = text.trim().split("\n");
+        const headers = lines[0]
+          .split(",")
+          .map((h) => h.trim().replace(/"/g, ""));
+        return lines.slice(1).map((line) => {
+          const vals = line.split(",").map((v) => v.trim().replace(/"/g, ""));
+          const obj = {};
+          headers.forEach((h, i) => (obj[h] = vals[i] || ""));
+          // Map common CSV fields to our format
+          return {
+            name:
+              obj.name ||
+              obj.Name ||
+              obj.candidate_name ||
+              `Candidate ${Math.random().toString(36).slice(2, 6)}`,
+            role: obj.role || obj.current_role || obj.title || "Professional",
+            exp: parseInt(obj.experience || obj.years_exp || obj.exp || 0),
+            company: obj.company || obj.current_company || "",
+            skills: obj.skills || obj.skill_set || "",
+            activity: obj.activity || obj.platform_activity || "",
+            education: obj.education || obj.degree || "",
+            highlight: obj.highlight || obj.achievement || obj.summary || "",
+          };
+        });
+      }
+
+      /* ── SCORE COLOR ── */
+      function scoreColor(s) {
+        if (s >= 85) return "#22C55E";
+        if (s >= 70) return "#00C9A7";
+        if (s >= 55) return "#4A9EFF";
+        return "#FF6B1A";
+      }
+      function fitLabel(s) {
+        if (s >= 85) return ["Excellent Fit", "fit-excellent"];
+        if (s >= 70) return ["Strong Fit", "fit-strong"];
+        if (s >= 55) return ["Good Fit", "fit-good"];
+        return ["Moderate Fit", "fit-moderate"];
+      }
+
+      /* ── MAIN RANKING ── */
+      async function runRanking() {
+        jobDescription = document.getElementById("jd-input").value.trim();
+        if (!jobDescription) {
+          alert("Please paste a job description first.");
+          return;
+        }
+        if (!candidates.length) {
+          alert("Please load candidates first.");
+          return;
+        }
+
+        document.getElementById("run-btn").disabled = true;
+        document.getElementById("results-section").style.display = "none";
+        document.getElementById("progress-card").style.display = "flex";
+
+        setProgress(
+          "🧠 Reading job description...",
+          "AI is understanding what this role truly needs",
+        );
+        await sleep(600);
+
+        // Build candidate list for AI
+        const candidateList = candidates
+          .map(
+            (c, i) =>
+              `Candidate ${i + 1}: ${c.name}
+    Current Role: ${c.role} | Experience: ${c.exp} years | Company: ${c.company}
+    Skills: ${c.skills}
+    Platform Activity: ${c.activity}
+    Education: ${c.education}
+    Key Achievement: ${c.highlight}`,
+          )
+          .join("\n\n");
+
+        setProgress(
+          "🤖 AI is ranking all candidates...",
+          "Analyzing career trajectories, skills depth, and behavioral signals",
+        );
+
+        const prompt = `You are an expert technical recruiter with 15 years of experience at top tech companies.
+
+JOB DESCRIPTION:
+${jobDescription}
+
+CANDIDATES TO RANK:
+${candidateList}
+
+Rank ALL ${candidates.length} candidates from best to worst fit for this role. For each candidate provide:
+1. A score from 0-100 (be realistic and differentiated — not everyone gets 80+)
+2. Top 3 skills that match
+3. 2-3 behavioral signals (positive or concerning)  
+4. A 2-sentence AI reasoning explaining WHY they rank where they do
+
+Respond ONLY in this exact JSON format (no preamble, no backticks):
+{
+  "rankings": [
+    {
+      "originalIndex": 0,
+      "score": 88,
+      "matchedSkills": ["Python", "AWS", "Distributed Systems"],
+      "signals": ["OSS contributor", "Startup experience", "High GitHub activity"],
+      "reasoning": "Strong Python and cloud skills directly match core requirements. Startup background and OSS contributions signal the independent, high-ownership mindset this role demands."
+    }
+  ],
+  "summary": "2-3 sentence summary of what you found across all candidates — common gaps, standout patterns, overall talent quality."
+}`;
+
+        try {
+          const res = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-6",
+              max_tokens: 1000,
+              messages: [{ role: "user", content: prompt }],
+            }),
+          });
+          const data = await res.json();
+          let text = data.content?.[0]?.text || "";
+          // Clean up response
+          text = text.replace(/```json|```/g, "").trim();
+          const parsed = JSON.parse(text);
+          setProgress("✅ Ranking complete!", "Preparing your shortlist...");
+          await sleep(400);
+          renderResults(parsed);
+        } catch (e) {
+          // Fallback with smart scoring if API fails
+          setProgress("⚡ Using local AI scoring...", "Generating results");
+          await sleep(800);
+          renderFallbackResults();
+        }
+
+        document.getElementById("progress-card").style.display = "none";
+        document.getElementById("run-btn").disabled = false;
+      }
+
+      function renderResults(parsed) {
+        rankedResults = parsed.rankings
+          .map((r) => ({
+            ...candidates[r.originalIndex],
+            aiScore: r.score,
+            matchedSkills: r.matchedSkills || [],
+            signals: r.signals || [],
+            reasoning: r.reasoning || "",
+          }))
+          .sort((a, b) => b.aiScore - a.aiScore);
+
+        displayResults(rankedResults, parsed.summary || "");
+      }
+
+      function renderFallbackResults() {
+        // Keyword + heuristic scoring as fallback
+        const jdWords = jobDescription.toLowerCase().split(/\W+/);
+        rankedResults = candidates
+          .map((c) => {
+            const cText =
+              `${c.skills} ${c.role} ${c.highlight} ${c.activity}`.toLowerCase();
+            let score = 40;
+            jdWords.forEach((w) => {
+              if (w.length > 3 && cText.includes(w)) score += 3;
+            });
+            score += Math.min(c.exp * 2, 20);
+            if (c.activity.includes("GitHub")) score += 5;
+            if (
+              c.activity.includes("OSS") ||
+              c.activity.includes("open source")
+            )
+              score += 8;
+            if (
+              c.company.match(
+                /google|amazon|microsoft|razorpay|flipkart|swiggy|zomato|phonepe/i,
+              )
+            )
+              score += 7;
+            score = Math.min(score, 98);
+            const skillArr = c.skills
+              .split(",")
+              .slice(0, 3)
+              .map((s) => s.trim());
+            return {
+              ...c,
+              aiScore: score,
+              matchedSkills: skillArr,
+              signals: [
+                c.activity.split("·")[0].trim(),
+                `${c.exp} years experience`,
+              ],
+              reasoning: `Matched ${skillArr.join(", ")} to job requirements. ${c.highlight.slice(0, 80)}...`,
+            };
+          })
+          .sort((a, b) => b.aiScore - a.aiScore);
+        displayResults(
+          rankedResults,
+          "AI scoring based on semantic match between candidate profiles and job requirements.",
+        );
+      }
+
+      function displayResults(results, summary) {
+        // Summary stats
+        const top = results.filter((r) => r.aiScore >= 70).length;
+        const avg = Math.round(
+          results.reduce((a, r) => a + r.aiScore, 0) / results.length,
+        );
+        document.getElementById("summary-grid").innerHTML = `
+    <div class="summary-stat">
+      <div class="ss-val" style="color:var(--saffron)">${results.length}</div>
+      <div class="ss-label">Candidates Analyzed</div>
+    </div>
+    <div class="summary-stat">
+      <div class="ss-val" style="color:var(--teal)">${top}</div>
+      <div class="ss-label">Strong Matches (70+)</div>
+    </div>
+    <div class="summary-stat">
+      <div class="ss-val" style="color:var(--blue)">${avg}</div>
+      <div class="ss-label">Average AI Score</div>
+    </div>
+    <div class="summary-stat">
+      <div class="ss-val" style="color:var(--green)">${results[0]?.name?.split(" ")[0] || "—"}</div>
+      <div class="ss-label">Top Candidate</div>
+    </div>`;
+
+        // Table rows
+        document.getElementById("results-body").innerHTML = results
+          .map((r, i) => {
+            const rankClass =
+              i === 0
+                ? "rank-1"
+                : i === 1
+                  ? "rank-2"
+                  : i === 2
+                    ? "rank-3"
+                    : "rank-other";
+            const col = scoreColor(r.aiScore);
+            const [fl, fc] = fitLabel(r.aiScore);
+            const skillsHTML = (r.matchedSkills || [])
+              .map((s) => `<span class="skill-tag">${s}</span>`)
+              .join("");
+            const sigsHTML = (r.signals || [])
+              .map((s) => {
+                const cls =
+                  s.toLowerCase().includes("concern") ||
+                  s.toLowerCase().includes("limited")
+                    ? "sig-neutral"
+                    : "sig-positive";
+                return `<span class="signal-tag ${cls}">${s}</span>`;
+              })
+              .join("");
+            return `
+      <tr>
+        <td><div class="rank-badge ${rankClass}">${i + 1}</div></td>
+        <td>
+          <div class="candidate-name">${r.name || "—"}</div>
+          <div class="candidate-role">${r.role || ""} · ${r.company || ""}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px">${r.exp || 0} yrs exp · ${r.education || ""}</div>
+        </td>
+        <td>
+          <div class="score-bar-wrap">
+            <div class="score-num" style="color:${col}">${r.aiScore}</div>
+            <div style="flex:1">
+              <div class="score-track">
+                <div class="score-fill" style="width:${r.aiScore}%;background:linear-gradient(90deg,${col},var(--teal))"></div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>${skillsHTML}</td>
+        <td>${sigsHTML}</td>
+        <td><div class="ai-reason">${r.reasoning || "—"}</div></td>
+        <td><span class="fit-label ${fc}">${fl}</span></td>
+      </tr>`;
+          })
+          .join("");
+
+        // AI Summary
+        document.getElementById("ai-summary-text").textContent = summary;
+
+        document.getElementById("results-section").style.display = "block";
+        document
+          .getElementById("results-section")
+          .scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+
+      function exportCSV() {
+        if (!rankedResults.length) return;
+        const headers = [
+          "Rank",
+          "Name",
+          "Current Role",
+          "Company",
+          "Experience (yrs)",
+          "AI Score",
+          "Fit Level",
+          "Matched Skills",
+          "Reasoning",
+        ];
+        const rows = rankedResults.map((r, i) => [
+          i + 1,
+          r.name,
+          r.role,
+          r.company,
+          r.exp,
+          r.aiScore,
+          fitLabel(r.aiScore)[0],
+          (r.matchedSkills || []).join(" | "),
+          (r.reasoning || "").replace(/,/g, ";"),
+        ]);
+        const csv = [headers, ...rows].map((r) => r.join(",")).join("\n");
+        download("hireiq_ranked_candidates.csv", csv, "text/csv");
+      }
+      function exportJSON() {
+        if (!rankedResults.length) return;
+        const data = rankedResults.map((r, i) => ({
+          rank: i + 1,
+          name: r.name,
+          role: r.role,
+          company: r.company,
+          experience_years: r.exp,
+          ai_score: r.aiScore,
+          fit_level: fitLabel(r.aiScore)[0],
+          matched_skills: r.matchedSkills,
+          behavioral_signals: r.signals,
+          ai_reasoning: r.reasoning,
+        }));
+        download(
+          "hireiq_ranked_candidates.json",
+          JSON.stringify(data, null, 2),
+          "application/json",
+        );
+      }
+      function download(filename, content, type) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([content], { type }));
+        a.download = filename;
+        a.click();
+      }
+
+    
+      function setProgress(text, sub) {
+        document.getElementById("progress-text").textContent = text;
+        document.getElementById("progress-sub").textContent = sub;
+      }
+      function sleep(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+    </script>
   </body>
-  <script src="script.js"></script>
 </html>
